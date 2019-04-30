@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Hive知识点总结"><meta name="keywords" content="Hive"><meta name="author" content="Monkey"><meta name="copyright" content="Monkey"><title>Hive知识点总结 | 猴子笔记</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"N6GP2ERA7A","apiKey":"06f568382110773eba4ced2704c7205b","indexName":"monkey_index","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hive与mysql的区别"><span class="toc-number">1.</span> <span class="toc-text">hive与mysql的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hive内部表和外部表"><span class="toc-number">2.</span> <span class="toc-text">hive内部表和外部表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内部表和外部表的区别"><span class="toc-number">2.1.</span> <span class="toc-text">内部表和外部表的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部表和外部表的转换"><span class="toc-number">2.2.</span> <span class="toc-text">内部表和外部表的转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hive分区的三种类型"><span class="toc-number">3.</span> <span class="toc-text">hive分区的三种类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hive的存储格式"><span class="toc-number">4.</span> <span class="toc-text">hive的存储格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hive窗口函数"><span class="toc-number">5.</span> <span class="toc-text">hive窗口函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hive的4种排序方式"><span class="toc-number">6.</span> <span class="toc-text">hive的4种排序方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hive调优方式"><span class="toc-number">7.</span> <span class="toc-text">hive调优方式</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">Monkey</div><div class="author-info__description text-center">接受变化，拥抱新世界</div><div class="follow-button"><a href="https://github.com/monkeyip">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">13</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">9</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">9</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://molunerfinn.com">Molunerfinn</a><a class="author-info-links__name text-center" href="https://piegg.cn">PiEgg</a><a class="author-info-links__name text-center" href="https://piegg.cn">Elody</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">猴子笔记</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a><a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a><a class="site-page" href="/about">About</a></span></div><div id="post-info"><div id="post-title">Hive知识点总结</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-04-30</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Hive/">Hive</a><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">1.7k</span><span class="post-meta__separator">|</span><span>Reading time: 5 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="hive与mysql的区别"><a href="#hive与mysql的区别" class="headerlink" title="hive与mysql的区别"></a>hive与mysql的区别</h2><blockquote>
+<p>回答思路：hive背景（原理、本质）–&gt;两者操作、本质的差别–&gt;读写差别–&gt;其它差别。</p>
+</blockquote>
+<p>Hive的诞生背景：学mysql的也想入门大数据，但又不会java，于是hive就诞生了。Hive 是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据文件映射为一张表。本质是将HQL语句转化为MR程序。</p>
+<a id="more"></a>
+<p>hive总体来说操作等方面和MySQL没有太大差别。但是本质却有差别，Hive注重联机分析的处理，mysql注重事务的处理。Hive注重的是分析，mysql注重的是处理。</p>
+<p>MySQL在写的时候检查字段，hive在读的时候检查字段。所以在新增数据时，hive比较快，只需要直接load就行，而MySQL需要先检查字段。</p>
+<p>hive与mysql的其它差别如下：</p>
+<ol>
+<li>数据存储位置：Hive 的数据都是存储在 HDFS 中的。而数据库则可以将数据保存在块设备或者本地文件系统中。</li>
+<li>执行：Hive 中大多数查询的执行是通过 Hadoop 提供的 MapReduce 来实现的。而数据库通常有自己的执行引擎。</li>
+<li>执行延迟：hive高延迟，mysql低延迟。</li>
+<li>可扩展性：hive的可扩展性高，而数据库由于ACID语义限制，扩展性有限。</li>
+<li>数据规模：hive可以支持很大规模的数据，数据库可以支持的数据规模较小。</li>
+</ol>
+<h2 id="hive内部表和外部表"><a href="#hive内部表和外部表" class="headerlink" title="hive内部表和外部表"></a>hive内部表和外部表</h2><h3 id="内部表和外部表的区别"><a href="#内部表和外部表的区别" class="headerlink" title="内部表和外部表的区别"></a>内部表和外部表的区别</h3><p>未被external修饰的是内部表（managed table），被external修饰的为外部表（external table）。</p>
+<p>区别：</p>
+<ul>
+<li>内部表数据由Hive自身管理，外部表数据由HDFS管理。</li>
+<li>删除内部表会直接删除元数据（metadata）及存储数据；删除外部表仅仅会删除元数据，HDFS上的文件并不会被删除。</li>
+<li>对内部表的修改会将修改直接同步给元数据，而对外部表的表结构和分区进行修改，则需要修复（MSCK REPAIR TABLE table_name;）</li>
+</ul>
+<h3 id="内部表和外部表的转换"><a href="#内部表和外部表的转换" class="headerlink" title="内部表和外部表的转换"></a>内部表和外部表的转换</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t_newuser <span class="keyword">set</span> TBLPROPERTIES(‘<span class="keyword">EXTERNAL</span>’=‘<span class="literal">TRUE</span>’); <span class="comment">###true一定要大写</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t_newuser <span class="keyword">set</span> TBLPROPERTIES(‘<span class="keyword">EXTERNAL</span>’=‘<span class="literal">false</span>’); <span class="comment">###false大小写都没关系</span></span><br></pre></td></tr></table></figure>
+<h2 id="hive分区的三种类型"><a href="#hive分区的三种类型" class="headerlink" title="hive分区的三种类型"></a>hive分区的三种类型</h2><ul>
+<li>静态分区：加载数据的时候指定分区的值。</li>
+<li>动态分区：数据未知，根据分区的值确定创建分区。</li>
+<li>混合分区：静态加动态。</li>
+</ul>
+<h2 id="hive的存储格式"><a href="#hive的存储格式" class="headerlink" title="hive的存储格式"></a>hive的存储格式</h2><ul>
+<li>Textfile未经过压缩的。</li>
+<li>Sequencefile：hive为用户提供的二进制存储，本身就压缩，不能使用load方式加载数据。</li>
+<li>Rcfile：hive提供的行列混合存储，hive在该格式下，会尽量将附近的行和列的块存储到一起，仍然是压缩格式，查询效率比较高。</li>
+<li>Orc是rcfile的升级版本。</li>
+<li><p>Parquet列式存储。</p>
+<h2 id="hive窗口函数"><a href="#hive窗口函数" class="headerlink" title="hive窗口函数"></a>hive窗口函数</h2></li>
+<li><p>FIRST_VALUE：取分组内排序后，截止到当前行，第一个值 。</p>
+</li>
+<li>LAST_VALUE： 取分组内排序后，截止到当前行，最后一个值 。</li>
+<li>LEAD(col,n,DEFAULT) ：用于统计窗口内往下第n行值。第一个参数为列名，第二个参数为往下第n行（可选，默认为1），第三个参数为默认值（当往下第n行为NULL时候，取默认值，如不指定，则为NULL） 。</li>
+<li>LAG(col,n,DEFAULT) ：与lead相反，用于统计窗口内往上第n行值。第一个参数为列名，第二个参数为往上第n行（可选，默认为1），第三个参数为默认值（当往上第n行为NULL时候，取默认值，如不指定，则为NULL）。</li>
+</ul>
+<h2 id="hive的4种排序方式"><a href="#hive的4种排序方式" class="headerlink" title="hive的4种排序方式"></a>hive的4种排序方式</h2><ol>
+<li>order by全局排序。全部数据划分到一个reduce上。与sql中的order by类似，不同的是，hive中的order by在严格模式下，必须跟limit。</li>
+<li>sort by 每个mapreduce内部排序。</li>
+<li>distributed by分区排序，与sql中的group by类似，常与sort by组合使用，distributed by控制map的输出在reduce中如何划分，sort by控制reduce中的数据如何排序。hive要求distributed by语句出现在sort by语句之前。</li>
+<li>cluster by，当distributed by与sort by字段相同，可以用cluster by代替该组合，但cluster by 不能跟desc，asc。补充：可以这样书写<code>select a.* from (select * from test cluster by id ) a order by a.id;</code></li>
+</ol>
+<h2 id="hive调优方式"><a href="#hive调优方式" class="headerlink" title="hive调优方式"></a>hive调优方式</h2><ol>
+<li><p>Fetch抓取：把不需要MR任务计算的查询语句设置成不执行MR任务。三个参数，none表示禁用Fetch，所有查询都执行MR任务；more在进行select/filter/limit查询时不会运行MR任务；minimal在select/limit的时候不会运行MR任务，但是filter会运行MR任务。<br>hive.fetch.task.conversion</p>
+</li>
+<li><p>本地模式：让输入的数据量特别小的任务直接在本地节点上进行处理，而不提交到集群。本地模式通过判断文件的大小（默认128MB）和已输入文件的个数（默认4个）来判断是否在本地执行。<br>set hive.exec.mode.local.auto=true; //开启本地 mr<br>set hive.exec.mode.local.auto.inputbytes.max=50000000;<br>set hive.exec.mode.local.auto.input.files.max=10;</p>
+</li>
+<li><p>表的优化：优化手段有join、行列过滤、分区、分桶、动态分区等等。</p>
+</li>
+<li><p>避免数据倾斜：通过合理设置map和reduce数、小文件合并等方式尽量保证负载均衡。或为了避免因为map或reduce任务卡死导致数据倾斜，通常也设置推测执行。</p>
+</li>
+<li><p>推测执行：为了避免因为程序的BUG/负载不均衡/资源分布不均等原因导致同一作业中某一任务运行速度过慢，设置推测执行，为该任务启动一个备份任务，同时执行，最先运行完成的计算结果作为最终结果。分为map端和reduce端的推测执行。<br>set mapreduce.map.speculative=true<br>set mapreduce.reduce.speculative=true</p>
+</li>
+<li><p>并行执行：把没有依赖关系的MR任务设置为并行执行，提高多任务运行时的效率。<br>set hive.exec.parallel=true ; // 开启任务并行执行<br>set hive.exec.parallel.thread.number=8; //默认值为8个任务可以同时运行</p>
+</li>
+<li><p>严格模式：为了防止一些不正常的查询语句的执行。<br>hive.mapred.mode= strict</p>
+</li>
+<li><p>JVM重用：当有很多小文件的时候，每次运行MR任务都会开启一个JVM进程，JVM频繁的开启关闭消耗大量的性能，所以在处理小文件的时候，可以设置JVM重用，让一个JVM处理多个任务后再关闭。<br>mapreduce.job.jvm.numtasks</p>
+</li>
+<li><p>压缩：通过压缩对项目进行优化。例如开启 map 输出阶段压缩可以减少 job 中 map 和 Reduce task 间数据传输量。</p>
+</li>
+<li><p>执行计划：Hive中提供的可以查看Hql语句的执行计划，在执行计划中会生成抽象语法树，在语法树中会显示HQL语句之间的依赖关系以及执行过程。通过这些执行的过程和依赖可以对HQL语句进行优化。</p>
+</li>
+</ol>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Monkey</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://monkeyip.github.io/2019/04/30/Hive知识点总结/">https://monkeyip.github.io/2019/04/30/Hive知识点总结/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hive/">Hive</a></div><div class="social-share" data-disabled="google,facebook"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/04/30/HBase知识点总结/"><i class="fa fa-chevron-left">  </i><span>HBase知识点总结</span></a></div><div class="next-post pull-right"><a href="/2019/04/30/数据库知识点总结/"><span>数据库知识点总结</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '6471dab7a33572779bcb',
+  clientSecret: '2cea5b126504ccdfe452686c4b69ebf03418831a',
+  repo: 'monkeyip.github.io',
+  owner: 'monkeyip',
+  admin: 'monkeyip',
+  id: md5(decodeURI(location.pathname)),
+  language: 'en'
+})
+gitalk.render('gitalk-container')</script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2018 - 2019 By Monkey</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script src="/js/search/algolia.js"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
