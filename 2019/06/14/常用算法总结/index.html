@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+  <script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7hctjj203k03kq2s.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7dz4tj200w00wdfl.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7999yj200g00g0rb.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7hctjj203k03kq2s.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="二分查找 给定一个数组（有序列表）和一个数字，要求查出该数字所在的索引位置。  def binary_search(list, item):    # lowh和high用于跟踪要在其中查找的列表部分    low = 0    high = len(list) - 1        # 只要范围没有缩小到只包含一个元素，就检查中间的元素    while low &amp;lt;= high:">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用算法总结">
+<meta property="og:url" content="https://monkeyip.github.io/2019/06/14/常用算法总结/index.html">
+<meta property="og:site_name" content="猴子笔记">
+<meta property="og:description" content="二分查找 给定一个数组（有序列表）和一个数字，要求查出该数字所在的索引位置。  def binary_search(list, item):    # lowh和high用于跟踪要在其中查找的列表部分    low = 0    high = len(list) - 1        # 只要范围没有缩小到只包含一个元素，就检查中间的元素    while low &amp;lt;= high:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-14T13:38:11.636Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用算法总结">
+<meta name="twitter:description" content="二分查找 给定一个数组（有序列表）和一个数字，要求查出该数字所在的索引位置。  def binary_search(list, item):    # lowh和high用于跟踪要在其中查找的列表部分    low = 0    high = len(list) - 1        # 只要范围没有缩小到只包含一个元素，就检查中间的元素    while low &amp;lt;= high:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'N6GP2ERA7A',
+      apiKey: '06f568382110773eba4ced2704c7205b',
+      indexName: 'monkey_index',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://monkeyip.github.io/2019/06/14/常用算法总结/">
+
+
+
+
+
+<link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
+  <title>常用算法总结 | 猴子笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/monkeyip" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猴子笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Monkey's Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://monkeyip.github.io/2019/06/14/常用算法总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Monkey">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr4jmngj20m80m8drg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猴子笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">常用算法总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-14T21:12:48+08:00">
+                2019-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/06/14/常用算法总结/" class="leancloud_visitors" data-flag-title="常用算法总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><blockquote>
+<p>给定一个数组（<strong>有序列表</strong>）和一个数字，要求查出该数字所在的索引位置。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_search</span><span class="params">(list, item)</span>:</span></span><br><span class="line">    <span class="comment"># lowh和high用于跟踪要在其中查找的列表部分</span></span><br><span class="line">    low = <span class="number">0</span></span><br><span class="line">    high = len(list) - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 只要范围没有缩小到只包含一个元素，就检查中间的元素</span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high:</span><br><span class="line">        mid = (low + high) // <span class="number">2</span></span><br><span class="line">        guess = list[mid]</span><br><span class="line">        <span class="comment"># 找到了元素</span></span><br><span class="line">        <span class="keyword">if</span> guess == item:</span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">        <span class="comment"># 猜的数字大了</span></span><br><span class="line">        <span class="keyword">if</span> guess &gt; item:</span><br><span class="line">            high = mid - <span class="number">1</span></span><br><span class="line">        <span class="comment"># 猜的数字小了</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            low = mid + <span class="number">1</span></span><br><span class="line">    <span class="comment"># 没有指定的元素</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">my_list = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br><span class="line">print(binary_search(my_list, <span class="number">3</span>)) <span class="comment"># =&gt; 1</span></span><br><span class="line">print(binary_search(my_list, <span class="number">-1</span>)) <span class="comment"># =&gt; None</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>总结：</p>
+<ul>
+<li>二分查找是对数时间，时间复杂度为O(logn)</li>
+<li>简单查找是线性时间，时间复杂度为O(n)</li>
+<li>O(logn)比O(n)快。需要搜索的元素越多，前者比后者就快越多</li>
+<li>算法运行时间并不以秒为单位</li>
+<li>算法运行时间是从其增速的角度度量的</li>
+</ul>
+<hr>
+<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><blockquote>
+<p>将数组元素按从小到大的顺序排列。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找出数组中的最小元素</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findSmallest</span><span class="params">(arr)</span>:</span></span><br><span class="line">    <span class="comment"># 存储最小的值</span></span><br><span class="line">    smallest = arr[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 存储最小元素的索引</span></span><br><span class="line">    smallest_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(arr)):</span><br><span class="line">        <span class="keyword">if</span> arr[i] &lt; smallest:</span><br><span class="line">            smallest_index = i</span><br><span class="line">            smallest = arr[i]</span><br><span class="line">    <span class="keyword">return</span> smallest_index</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对数组进行排序</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectionSort</span><span class="params">(arr)</span>:</span></span><br><span class="line">    newArr = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(arr)):</span><br><span class="line">        <span class="comment"># 找出数组中最小元素的索引，并将其加入到新数组中</span></span><br><span class="line">        smallest_index = findSmallest(arr)</span><br><span class="line">        newArr.append(arr.pop(smallest_index)) <span class="comment"># 原数组arr不断的删除最小的元素</span></span><br><span class="line">    <span class="keyword">return</span> newArr</span><br><span class="line"></span><br><span class="line">print(selectionSort([<span class="number">5</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
+<p>选择排序，每检查一次数组，找出最小元素，运行时间都为O(n)，而这个操作需要执行n次，因此其时间复杂度为O(n<sup>2</sup>)（其中的常数1/2要省略）</p>
+<p>总结：</p>
+<ul>
+<li>需要存储多个元素时，可使用数组或链表</li>
+<li>数组的元素都在一起，链表的元素是分开的，其中每个元素都存储了下一个元素的地址</li>
+<li>数组的读取速度很快，链表的插入和删除速度很快</li>
+</ul>
+<hr>
+<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h3 id="基线条件和递归条件"><a href="#基线条件和递归条件" class="headerlink" title="基线条件和递归条件"></a>基线条件和递归条件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">countdown</span><span class="params">(i)</span>:</span></span><br><span class="line">    <span class="comment"># 基线条件</span></span><br><span class="line">    <span class="keyword">if</span> i &lt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="comment"># 递归条件</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(i)</span><br><span class="line">        <span class="keyword">return</span> countdown(i<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">countdown(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="调用栈（call-stack）"><a href="#调用栈（call-stack）" class="headerlink" title="调用栈（call stack）"></a>调用栈（call stack）</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet2</span><span class="params">(name)</span>:</span></span><br><span class="line">    print(<span class="string">"how are you, "</span>, name, <span class="string">"?"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bye</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"ok bye!"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">(name)</span>:</span></span><br><span class="line">    print(<span class="string">"hello, "</span>, name, <span class="string">"!"</span>)</span><br><span class="line">    greet2(name)</span><br><span class="line">    print(<span class="string">"getting ready to say bye..."</span>)</span><br><span class="line">    bye()</span><br><span class="line">    </span><br><span class="line">greet(<span class="string">"adit"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="递归调用栈"><a href="#递归调用栈" class="headerlink" title="递归调用栈"></a>递归调用栈</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> x * fact(x<span class="number">-1</span>)</span><br><span class="line">    </span><br><span class="line">print(fact(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>每个fact函数调用都有自己的x变量，但是不能访问其他函数调用的变量x</li>
+<li>最后一次被调用的函数先返回，然后接着返回之前的调用</li>
+</ul>
+<p>总结：</p>
+<ul>
+<li>递归指的是调用自己的函数</li>
+<li>每个递归函数都有两个条件：基线条件和递归条件</li>
+<li>栈有两种操作：压入和弹出</li>
+<li>所有函数调用都进入调用栈</li>
+<li>调用栈可能很长，这将占用大量的内存</li>
+</ul>
+<hr>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><h3 id="分治算法（D-amp-C算法）"><a href="#分治算法（D-amp-C算法）" class="headerlink" title="分治算法（D&amp;C算法）"></a>分治算法（D&amp;C算法）</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 循环求和</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(arr)</span>:</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> arr:</span><br><span class="line">        total += x</span><br><span class="line">    <span class="keyword">return</span> total</span><br><span class="line"></span><br><span class="line">print(sum([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 递归求和</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(list)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> list == []:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> list[<span class="number">0</span>] + sum(list[<span class="number">1</span>:])</span><br><span class="line"></span><br><span class="line">print(sum([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 递归计算列表包含的元素数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(list)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> list == []:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> + count(list[<span class="number">1</span>:])</span><br><span class="line"></span><br><span class="line">print(count([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 递归找出列表中最大的数字</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_</span><span class="params">(lst)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(lst) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> len(lst) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> lst[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sub_max = max_(lst[<span class="number">1</span>:])</span><br><span class="line">        <span class="keyword">return</span> lst[<span class="number">0</span>] <span class="keyword">if</span> lst[<span class="number">0</span>] &gt; sub_max <span class="keyword">else</span> sub_max</span><br><span class="line">    </span><br><span class="line">print(max_([<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+<h3 id="快速排序-1"><a href="#快速排序-1" class="headerlink" title="快速排序"></a>快速排序</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort</span><span class="params">(array)</span>:</span></span><br><span class="line">    <span class="comment"># 基线条件：为空或只包含一个元素的数组是“有序”的</span></span><br><span class="line">    <span class="keyword">if</span> len(array) &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 递归条件</span></span><br><span class="line">        pivot = array[<span class="number">0</span>]</span><br><span class="line">        <span class="comment"># 由所有小于基准值的元素组成的子数组</span></span><br><span class="line">        less = [i <span class="keyword">for</span> i <span class="keyword">in</span> array[<span class="number">1</span>:] <span class="keyword">if</span> i &lt;= pivot]</span><br><span class="line">        <span class="comment"># 由所有大于基准值的元素组成的子数组</span></span><br><span class="line">        greater = [i <span class="keyword">for</span> i <span class="keyword">in</span> array[<span class="number">1</span>:] <span class="keyword">if</span> i &gt; pivot]</span><br><span class="line">        <span class="keyword">return</span> quicksort(less) + [pivot] + quicksort(greater)</span><br><span class="line">    </span><br><span class="line">print(quicksort([<span class="number">10</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>D&amp;C将问题逐步分解。使用D&amp;C处理列表时，基线条件很可能是空数组或只包含一个元素的数组</li>
+<li>实现快速排序时，请随机地选择用作基准值的元素。快速排序的平均运行时间为O(n log n)</li>
+<li>大O表示法中的常量有时候事关重大，这就是快速排序比合并排序快的原因所在</li>
+<li>比较简单查找和二分查找时，常量几乎无关紧要，因为列表很长时，O(log n)的速度比O(n)快得多</li>
+</ul>
+<hr>
+<h2 id="散列表"><a href="#散列表" class="headerlink" title="散列表"></a>散列表</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 散列表</span></span><br><span class="line">book = &#123;<span class="string">"apple"</span>: <span class="number">0.67</span>, <span class="string">"milk"</span>: <span class="number">1.49</span>, <span class="string">"avocado"</span>: <span class="number">1.49</span>&#125;</span><br><span class="line">print(book)</span><br><span class="line">print(book[<span class="string">"apple"</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 散列表防止重复</span></span><br><span class="line">voted = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_voter</span><span class="params">(name)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> voted.get(name):</span><br><span class="line">        print(<span class="string">"kick them out!"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        voted[name] = <span class="literal">True</span></span><br><span class="line">        print(<span class="string">"let them vote!"</span>)</span><br><span class="line">        </span><br><span class="line">check_voter(<span class="string">"tom"</span>)</span><br><span class="line">check_voter(<span class="string">"mike"</span>)</span><br><span class="line">check_voter(<span class="string">"mike"</span>)</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>散列表的查找、插入和删除速度都非常快</li>
+<li>散列表适合用于模拟映射关系</li>
+<li>散列表可用于缓存数据（例如，在Web服务器上）</li>
+<li>散列表非常适合用于防止重复</li>
+</ul>
+<hr>
+<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>广度优先搜索解决了两类问题：</p>
+<ul>
+<li>第一类问题：从节点A出发，有前往节点B的路径吗？</li>
+<li>第二类问题：从节点A出发，前往节点B的哪条路径最短？</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person_is_seller</span><span class="params">(name)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> name[<span class="number">-1</span>] == <span class="string">'m'</span></span><br><span class="line"></span><br><span class="line">graph = &#123;&#125;</span><br><span class="line">graph[<span class="string">"you"</span>] = [<span class="string">"alice"</span>, <span class="string">"bob"</span>, <span class="string">"claire"</span>]</span><br><span class="line">graph[<span class="string">"bob"</span>] = [<span class="string">"anuj"</span>, <span class="string">"peggy"</span>]</span><br><span class="line">graph[<span class="string">"alice"</span>] = [<span class="string">"peggy"</span>]</span><br><span class="line">graph[<span class="string">"claire"</span>] = [<span class="string">"thom"</span>, <span class="string">"jonny"</span>]</span><br><span class="line">graph[<span class="string">"anuj"</span>] = []</span><br><span class="line">graph[<span class="string">"peggy"</span>] = []</span><br><span class="line">graph[<span class="string">"thom"</span>] = []</span><br><span class="line">graph[<span class="string">"jonny"</span>] = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(name)</span>:</span></span><br><span class="line">    <span class="comment"># 创建一个队列</span></span><br><span class="line">    search_queue = deque()</span><br><span class="line">    <span class="comment"># 将你的邻居都加入到这个搜索队列中</span></span><br><span class="line">    search_queue += graph[name]</span><br><span class="line">    <span class="comment"># 这个数组用于记录检查过的人</span></span><br><span class="line">    searched = []</span><br><span class="line">    <span class="keyword">while</span> search_queue:</span><br><span class="line">        <span class="comment"># 只要队列不为空，就取出其中的第一个人，并从队列中移除</span></span><br><span class="line">        person = search_queue.popleft()</span><br><span class="line">        <span class="comment"># 仅当这个人没检查过时才检查</span></span><br><span class="line">        <span class="keyword">if</span> person <span class="keyword">not</span> <span class="keyword">in</span> searched:</span><br><span class="line">            <span class="comment"># 检查这个人是否是芒果销售商</span></span><br><span class="line">            <span class="keyword">if</span> person_is_seller(person):</span><br><span class="line">                print(person + <span class="string">" is a mango seller!"</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 不是芒果销售商。将这个人的朋友都加入搜索队列</span></span><br><span class="line">                search_queue += graph[person]</span><br><span class="line">                <span class="comment"># 将这个人标记为检查过</span></span><br><span class="line">                searched.append(person)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">search(<span class="string">"you"</span>)</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>广度优先搜索指出是否有从A到B的路径，如果有，广度优先搜索将找出最短路径</li>
+<li>面临类似于寻找最短路径的问题时，可尝试使用图来建立模型，再使用广度优先搜索来解决问题</li>
+<li>有向图中的边为箭头，箭头的方向指定了关系的方向，例如，rama→adit表示rama欠adit钱</li>
+<li>无向图中的边不带箭头，其中的关系是双向的，例如，ross - rachel表示“ross与rachel约会，而rachel也与ross约会”</li>
+<li>队列是先进先出（FIFO）的，栈是后进先出（LIFO）的</li>
+<li>你需要按加入顺序检查搜索列表中的人，否则找到的就不是最短路径，因此搜索列表必须是队列</li>
+<li>对于检查过的人，务必不要再去检查，否则可能导致无限循环</li>
+</ul>
+<hr>
+<h2 id="狄克斯特拉算法"><a href="#狄克斯特拉算法" class="headerlink" title="狄克斯特拉算法"></a>狄克斯特拉算法</h2><p>对比广度优先搜索，狄克斯特拉算法采用了“加权图”的概念。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># the graph</span></span><br><span class="line">graph = &#123;&#125;</span><br><span class="line">graph[<span class="string">"start"</span>] = &#123;&#125;</span><br><span class="line">graph[<span class="string">"start"</span>][<span class="string">"a"</span>] = <span class="number">6</span></span><br><span class="line">graph[<span class="string">"start"</span>][<span class="string">"b"</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">graph[<span class="string">"a"</span>] = &#123;&#125;</span><br><span class="line">graph[<span class="string">"a"</span>][<span class="string">"fin"</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">graph[<span class="string">"b"</span>] = &#123;&#125;</span><br><span class="line">graph[<span class="string">"b"</span>][<span class="string">"a"</span>] = <span class="number">3</span></span><br><span class="line">graph[<span class="string">"b"</span>][<span class="string">"fin"</span>] = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">graph[<span class="string">"fin"</span>] = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># the costs table</span></span><br><span class="line">infinity = float(<span class="string">"inf"</span>)</span><br><span class="line">costs = &#123;&#125;</span><br><span class="line">costs[<span class="string">"a"</span>] = <span class="number">6</span></span><br><span class="line">costs[<span class="string">"b"</span>] = <span class="number">2</span></span><br><span class="line">costs[<span class="string">"fin"</span>] = infinity</span><br><span class="line"></span><br><span class="line"><span class="comment"># the parents table</span></span><br><span class="line">parents = &#123;&#125;</span><br><span class="line">parents[<span class="string">"a"</span>] = <span class="string">"start"</span></span><br><span class="line">parents[<span class="string">"b"</span>] = <span class="string">"start"</span></span><br><span class="line">parents[<span class="string">"fin"</span>] = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">processed = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_lowest_cost_node</span><span class="params">(costs)</span>:</span></span><br><span class="line">    lowest_cost = float(<span class="string">"inf"</span>)</span><br><span class="line">    lowest_cost_node = <span class="literal">None</span></span><br><span class="line">    <span class="comment"># 遍历所有的节点</span></span><br><span class="line">    <span class="keyword">for</span> node <span class="keyword">in</span> costs:</span><br><span class="line">        cost = costs[node]</span><br><span class="line">        <span class="comment"># 如果当前节点的开销更低且未处理过</span></span><br><span class="line">        <span class="keyword">if</span> cost &lt; lowest_cost <span class="keyword">and</span> node <span class="keyword">not</span> <span class="keyword">in</span> processed:</span><br><span class="line">            <span class="comment"># 就将其视为开销最低的节点</span></span><br><span class="line">            lowest_cost = cost</span><br><span class="line">            lowest_cost_node = node</span><br><span class="line">    <span class="keyword">return</span> lowest_cost_node</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在未处理的节点中找出开销最小的节点</span></span><br><span class="line">node = find_lowest_cost_node(costs)</span><br><span class="line"><span class="comment"># 这个while循环在所有节点都被处理过后结束</span></span><br><span class="line"><span class="keyword">while</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    cost = costs[node]</span><br><span class="line">    neighbors = graph[node]</span><br><span class="line">    <span class="comment"># 遍历当前节点的所有邻居</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> neighbors.keys():</span><br><span class="line">        new_cost = cost + neighbors[n]</span><br><span class="line">        <span class="comment"># 如果经当前节点前往该邻居更近</span></span><br><span class="line">        <span class="keyword">if</span> costs[n] &gt; new_cost:</span><br><span class="line">            <span class="comment"># 就更新该邻居的开销</span></span><br><span class="line">            costs[n] = new_cost</span><br><span class="line">            <span class="comment"># 同时将该邻居的父节点设置为当前节点</span></span><br><span class="line">            parents[n] = node</span><br><span class="line">    <span class="comment"># 将当前节点标记为处理过</span></span><br><span class="line">    processed.append(node)</span><br><span class="line">    <span class="comment"># 找出接下来要处理的节点，并循环</span></span><br><span class="line">    node = find_lowest_cost_node(costs)</span><br><span class="line">        </span><br><span class="line">print(<span class="string">"cost from the start to each node:"</span>)</span><br><span class="line">print(costs)</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>广度优先搜索用于在非加权图中查找最短路径</li>
+<li>狄克斯特拉算法用于在加权图中查找最短路径</li>
+<li>仅当权重为正时狄克斯特拉算法才管用</li>
+<li>如果图中包含负权边，请使用贝尔曼福德算法</li>
+</ul>
+<hr>
+<h2 id="贪婪算法"><a href="#贪婪算法" class="headerlink" title="贪婪算法"></a>贪婪算法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 需要覆盖的州</span></span><br><span class="line">states_needed = set([<span class="string">"mt"</span>, <span class="string">"wa"</span>, <span class="string">"or"</span>, <span class="string">"id"</span>, <span class="string">"nv"</span>, <span class="string">"ut"</span>, <span class="string">"ca"</span>, <span class="string">"az"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 广播台覆盖的州</span></span><br><span class="line">stations = &#123;&#125;</span><br><span class="line">stations[<span class="string">"kone"</span>] = set([<span class="string">"id"</span>, <span class="string">"nv"</span>, <span class="string">"ut"</span>])</span><br><span class="line">stations[<span class="string">"ktwo"</span>] = set([<span class="string">"wa"</span>, <span class="string">"id"</span>, <span class="string">"mt"</span>])</span><br><span class="line">stations[<span class="string">"kthree"</span>] = set([<span class="string">"or"</span>, <span class="string">"nv"</span>, <span class="string">"ca"</span>])</span><br><span class="line">stations[<span class="string">"kfour"</span>] = set([<span class="string">"nv"</span>, <span class="string">"ut"</span>])</span><br><span class="line">stations[<span class="string">"kfive"</span>] = set([<span class="string">"ca"</span>, <span class="string">"az"</span>])</span><br><span class="line"></span><br><span class="line">final_stations = set()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> states_needed:</span><br><span class="line">    <span class="comment"># 覆盖了最多的未覆盖州的广播台</span></span><br><span class="line">    best_station = <span class="literal">None</span></span><br><span class="line">    <span class="comment"># 包含该广播台覆盖的所有未覆盖的州</span></span><br><span class="line">    states_covered= set()</span><br><span class="line">    <span class="keyword">for</span> station, states_for_station <span class="keyword">in</span> stations.items():</span><br><span class="line">        <span class="comment"># 计算交集，同时出现在states_needed和states_for_station中的州</span></span><br><span class="line">        covered = states_needed &amp; states_for_station</span><br><span class="line">        <span class="comment"># 该广播台覆盖的州比best_station多</span></span><br><span class="line">        <span class="keyword">if</span> len(covered) &gt; len(states_covered):</span><br><span class="line">            best_station = station</span><br><span class="line">            states_covered = covered</span><br><span class="line">            </span><br><span class="line">    states_needed -= states_covered</span><br><span class="line">    final_stations.add(best_station)</span><br><span class="line">    </span><br><span class="line">print(final_stations)</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>贪婪算法寻找局部最优解，企图以这种方式获得全局最优解</li>
+<li>对于NP完全问题，还没有找到快速解决方案</li>
+<li>面临NP完全问题时，最佳的做法是使用近似算法</li>
+<li>贪婪算法易于实现、运行速度快，是不错的近似算法</li>
+</ul>
+<hr>
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 最长公共子串</span></span><br><span class="line"><span class="comment"># 两个字母相同</span></span><br><span class="line"><span class="keyword">if</span> word_a[i] == word_b[j]:</span><br><span class="line">    <span class="comment"># 将当前单元格的值设置为左上方单元格的值加1</span></span><br><span class="line">    cell[i][j] = cell[i<span class="number">-1</span>][j<span class="number">-1</span>] + <span class="number">1</span></span><br><span class="line"><span class="comment"># 两个字母不同</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 值为0</span></span><br><span class="line">    cell[i][j] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 最长公共子序列</span></span><br><span class="line"><span class="comment"># 两个字母相同</span></span><br><span class="line"><span class="keyword">if</span> word_a[i] == word_b[j]:</span><br><span class="line">    <span class="comment"># 将当前单元格的值设置为左上方单元格的值加1</span></span><br><span class="line">    cell[i][j] = cell[i<span class="number">-1</span>][j<span class="number">-1</span>] + <span class="number">1</span></span><br><span class="line"><span class="comment"># 两个字母不同</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 选择上方和左方邻居中较大的那个</span></span><br><span class="line">    cell[i][j] = max(cell[i<span class="number">-1</span>][j], cell[i][j<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<ul>
+<li>需要在给定约束条件下优化某种指标时，动态规划很有用</li>
+<li>问题可分解为离散子问题时，可使用动态规划来解决</li>
+<li>每种动态规划解决方案都涉及网格</li>
+<li>单元格中的值通常就是你要优化的值</li>
+<li>每个单元格都是一个子问题，因此你需要考虑如何将问题分解为子问题</li>
+<li>没有放之四海皆准的计算动态规划解决方案的公式</li>
+</ul>
+<hr>
+<h2 id="K最近邻算法"><a href="#K最近邻算法" class="headerlink" title="K最近邻算法"></a>K最近邻算法</h2><p>总结：</p>
+<ul>
+<li>KNN用于分类和回归，需要考虑最近的邻居</li>
+<li>分类就是编组</li>
+<li>回归就是预测结果（如数字）</li>
+<li>特征抽取意味着将物品（如水果或用户）转换为一系列可比较的数字</li>
+<li>能否挑选合适的特征事关KNN算法的成败</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+    
+      <div>
+        
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+    
+      </div>
+    
+    
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7n6v6j20g60g3gmn.jpg" alt="Monkey 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr3k2i3j2089088dg4.jpg" alt="Monkey 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Monkey
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://monkeyip.github.io/2019/06/14/常用算法总结/" title="常用算法总结">https://monkeyip.github.io/2019/06/14/常用算法总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/30/Hadoop知识点总结/" rel="next" title="Hadoop知识点总结">
+                <i class="fa fa-chevron-left"></i> Hadoop知识点总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr4jmngj20m80m8drg.jpg" alt="Monkey">
+            
+              <p class="site-author-name" itemprop="name">Monkey</p>
+              <p class="site-description motion-element" itemprop="description">接受变化，拥抱新世界</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/monkeyip" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/monkeyip" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/monkeyip/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.biask.com/people/monkeyip" target="_blank" title="币问">
+                      
+                        <i class="fa fa-fw fa-heartbeat"></i>币问</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://notes.iissnan.com/" title="IIssNan" target="_blank">IIssNan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://shenzekun.cn/" title="Moorez" target="_blank">Moorez</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.aisun.org/" title="知了笔记" target="_blank">知了笔记</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://lruihao.cn/" title="博採眾長" target="_blank">博採眾長</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dragonstyle.win/" title="Dragonstyle" target="_blank">Dragonstyle</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二分查找"><span class="nav-number">1.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归"><span class="nav-number">3.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基线条件和递归条件"><span class="nav-number">3.1.</span> <span class="nav-text">基线条件和递归条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用栈（call-stack）"><span class="nav-number">3.2.</span> <span class="nav-text">调用栈（call stack）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归调用栈"><span class="nav-number">3.3.</span> <span class="nav-text">递归调用栈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序"><span class="nav-number">4.</span> <span class="nav-text">快速排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分治算法（D-amp-C算法）"><span class="nav-number">4.1.</span> <span class="nav-text">分治算法（D&amp;C算法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速排序-1"><span class="nav-number">4.2.</span> <span class="nav-text">快速排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#散列表"><span class="nav-number">5.</span> <span class="nav-text">散列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先搜索"><span class="nav-number">6.</span> <span class="nav-text">广度优先搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#狄克斯特拉算法"><span class="nav-number">7.</span> <span class="nav-text">狄克斯特拉算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贪婪算法"><span class="nav-number">8.</span> <span class="nav-text">贪婪算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划"><span class="nav-number">9.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#K最近邻算法"><span class="nav-number">10.</span> <span class="nav-text">K最近邻算法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Monkey</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("WX6dJUdPJtqBGSOTTTBpBxzL-gzGzoHsz", "tfrUh5E8wUOI7JtS9ugbt4Vd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/lib/clipboard/clipboard.js"></script>
+<script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
