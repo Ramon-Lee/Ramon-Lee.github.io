@@ -302,6 +302,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://monkeyip.github.io/2019/09/19/Python-Tornado框架总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猴子哥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr4jmngj20m80m8drg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猴子笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/19/Python-Tornado框架总结/" itemprop="url">Python-Tornado框架总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-19T19:50:44+08:00">
+                2019-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web后端/" itemprop="url" rel="index">
+                    <span itemprop="name">Web后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/19/Python-Tornado框架总结/" class="leancloud_visitors" data-flag-title="Python-Tornado框架总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Tornado框架"><a href="#Tornado框架" class="headerlink" title="Tornado框架"></a>Tornado框架</h2><h3 id="常用的包和模块"><a href="#常用的包和模块" class="headerlink" title="常用的包和模块"></a>常用的包和模块</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 异步HTTP服务器</span></span><br><span class="line"><span class="keyword">from</span> tornado.ioloop <span class="keyword">import</span> IOLoop</span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> gen,web</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多进程服务器</span></span><br><span class="line"><span class="keyword">from</span> tornado.httpserver <span class="keyword">import</span> HTTPServer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问数据库</span></span><br><span class="line"><span class="keyword">from</span> tornado_mysql <span class="keyword">import</span> pools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问网路</span></span><br><span class="line"><span class="keyword">from</span> tornado.httpclient <span class="keyword">import</span> AsyncHTTPClient</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单元测试</span></span><br><span class="line"><span class="keyword">from</span> tornado.testing <span class="keyword">import</span> gen_test, AsyncTestCase</span><br><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="comment"># TCPServer</span></span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> ioloop,gen,iostream</span><br><span class="line"><span class="keyword">from</span> tornado.tcpserver <span class="keyword">import</span> TCPServer</span><br><span class="line"></span><br><span class="line"><span class="comment"># TCPClient</span></span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> ioloop,gen,iostream</span><br><span class="line"><span class="keyword">from</span> tornado.tcpclient <span class="keyword">import</span> TCPClient</span><br><span class="line"></span><br><span class="line"><span class="comment"># socket模块（套接字）</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/19/Python-Tornado框架总结/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://monkeyip.github.io/2019/09/09/Tornado框架学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1787,166 +1945,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://monkeyip.github.io/2019/04/22/hadoop常用命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="猴子哥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr4jmngj20m80m8drg.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="猴子笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/22/hadoop常用命令/" itemprop="url">hadoop常用命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-22T21:58:35+08:00">
-                2019-04-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">hadoop</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/22/hadoop常用命令/" class="leancloud_visitors" data-flag-title="hadoop常用命令">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          hadoop fs -ls / 显示hdfs目录结构hadoop fs -du / 显示该目录中每个文件或目录的大小hadoop fs -du -s / 显示该目录总大小hadoop fs -mkdir /home 在hdfs指定目录内创建新目录hadoop fs -touchz /wahaha 创建一个空文件hadoop fs -rm /wahaha 删除一个文件hadoop fs -rmr /home 删除一个目录hadoop dfs -mv /hello /hello2 重命名hadoop dfs -cp /testdir/slaves /test 复制文件到指定目录hadoop dfs
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/22/hadoop常用命令/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-    
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1999,7 +1997,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2021,7 +2019,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
