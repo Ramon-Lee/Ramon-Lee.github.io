@@ -105,7 +105,7 @@
 <meta property="og:description" content="一、锁的分类 1、按锁的粒度划分，可分为表级锁、行级锁、页级锁（mysql）2、按锁级别划分，可分为共享锁、排他锁3、按使用方式划分，可分为乐观锁、悲观锁">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190626165822404.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjc5ODM1,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-11-25T14:09:39.779Z">
+<meta property="og:updated_time" content="2019-12-02T13:31:13.696Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL核心知识点——锁机制">
 <meta name="twitter:description" content="一、锁的分类 1、按锁的粒度划分，可分为表级锁、行级锁、页级锁（mysql）2、按锁级别划分，可分为共享锁、排他锁3、按使用方式划分，可分为乐观锁、悲观锁">
@@ -340,7 +340,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-12-02T21:31:13+08:00">
+                2019-12-02
+              </time>
             
           </span>
 
@@ -406,7 +418,7 @@
 
       
         <h1 id="一、锁的分类"><a href="#一、锁的分类" class="headerlink" title="一、锁的分类"></a>一、锁的分类</h1><blockquote>
-<p>1、按锁的粒度划分，可分为表级锁、行级锁、页级锁（mysql）<br><br>2、按锁级别划分，可分为共享锁、排他锁<br><br>3、按使用方式划分，可分为乐观锁、悲观锁</p>
+<p>1、按锁的粒度划分，可分为表级锁、行级锁、页级锁（mysql）<br>2、按锁级别划分，可分为共享锁、排他锁<br>3、按使用方式划分，可分为乐观锁、悲观锁</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="1-1-按粒度划分的锁"><a href="#1-1-按粒度划分的锁" class="headerlink" title="1.1 按粒度划分的锁"></a>1.1 按粒度划分的锁</h2><h3 id="1-1-1-表级锁（偏向于读）"><a href="#1-1-1-表级锁（偏向于读）" class="headerlink" title="1.1.1 表级锁（偏向于读）"></a>1.1.1 表级锁（偏向于读）</h3><ul>
@@ -438,7 +450,7 @@
 <p>由于InnoDB预设是Row-Level Lock，所以只有「明确」的<strong>指定主键</strong>，MySQL才会执行Row lock (只锁住被选取的资料例) ，否则MySQL将会执行Table Lock (将整个资料表单给锁住)。</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">假设一张表t，有id和name两个字段主键为id</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span> <span class="keyword">for</span> <span class="keyword">update</span>; <span class="comment">/*明确指定主键，并且有此笔记录，row lock*/</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">11</span> <span class="keyword">for</span> <span class="keyword">update</span>; <span class="comment">/*明确指定主键，若查无此笔记录，无lock*/</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> <span class="keyword">name</span> =<span class="string">'qweq'</span> <span class="keyword">for</span> <span class="keyword">update</span>; <span class="comment">/*无主键，table lock*/</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> <span class="keyword">id</span> &lt;&gt; <span class="number">2</span> <span class="keyword">for</span> <span class="keyword">update</span>; <span class="comment">/*主键不明确，table lock*/</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> <span class="number">3</span> <span class="keyword">for</span> <span class="keyword">update</span>; <span class="comment">/*主键不明确，table lock*/</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>表级锁分为：读锁和写锁（<code>lock table 表名称 read(write),表名称2 read(write)...</code>）<br><br>行级锁分为：共享锁和排他锁</p>
+<p>表级锁分为：读锁和写锁（<code>lock table 表名称 read(write),表名称2 read(write)...</code>）<br>行级锁分为：共享锁和排他锁</p>
 </blockquote>
 <h1 id="二、MyISAM存储引擎的锁"><a href="#二、MyISAM存储引擎的锁" class="headerlink" title="二、MyISAM存储引擎的锁"></a>二、MyISAM存储引擎的锁</h1><h2 id="2-1-支持表锁（偏向于读）"><a href="#2-1-支持表锁（偏向于读）" class="headerlink" title="2.1 支持表锁（偏向于读）"></a>2.1 支持表锁（偏向于读）</h2><ul>
 <li>MyISAM在执行SQL语句时，会自动为SELECT语句加上共享锁，为UPDATE/DELETE/INSERT操作加上排他锁</li>
@@ -457,7 +469,7 @@
 </blockquote>
 <h2 id="2-3-锁调度"><a href="#2-3-锁调度" class="headerlink" title="2.3 锁调度"></a>2.3 锁调度</h2><p>前面讲过，MyISAM存储引擎的读锁和写锁是互斥的，读写操作是串行的。那么，一个进程请求某个 MyISAM表的读锁，同时另一个进程也请求同一表的写锁，MySQL如何处理呢？答案是<strong>写进程先获得锁</strong>。不仅如此，即使读请求先到锁等待队列，写请求后到，写锁也会插到读锁请求之前！这是因为MySQL认为写请求一般比读请求要重要。<strong>这也正是MyISAM表不太适合于有大量更新操作和查询操作应用的原因，因为，大量的更新操作会造成查询操作很难获得读锁，从而可能永远阻塞。这种情况有时可能会变得非常糟糕！幸好我们可以通过一些设置来调节MyISAM 的调度行为。</strong></p>
 <blockquote>
-<p>设置MyISAM调度行为：<br><br>a、通过指定启动参数low-priority-updates，<strong>使MyISAM引擎默认给予读请求以优先的权利</strong>。<br><br>b、通过执行命令SET LOW_PRIORITY_UPDATES=1，使该连接发出的更新请求优先级降低。<br><br>c、通过指定INSERT、UPDATE、DELETE语句的LOW_PRIORITY属性，<strong>降低该语句的优先级</strong>。<br><br>d、系统参数max_write_lock_count设置一个合适的值；当一个表的读锁达到这个值后，MySQL便暂时将写请求的优先级降低，<strong>给读进程一定获得锁的机会</strong>。</p>
+<p>设置MyISAM调度行为：<br>a、通过指定启动参数low-priority-updates，<strong>使MyISAM引擎默认给予读请求以优先的权利</strong>。<br>b、通过执行命令SET LOW_PRIORITY_UPDATES=1，使该连接发出的更新请求优先级降低。<br>c、通过指定INSERT、UPDATE、DELETE语句的LOW_PRIORITY属性，<strong>降低该语句的优先级</strong>。<br>d、系统参数max_write_lock_count设置一个合适的值；当一个表的读锁达到这个值后，MySQL便暂时将写请求的优先级降低，<strong>给读进程一定获得锁的机会</strong>。</p>
 </blockquote>
 <p><a href="https://www.cnblogs.com/dongruiha/p/6894043.html" target="_blank" rel="noopener">MySQL中UPDATE的LOW_PRIORITY解决并发问题</a></p>
 <h1 id="三、InnoDB存储引擎的锁"><a href="#三、InnoDB存储引擎的锁" class="headerlink" title="三、InnoDB存储引擎的锁"></a>三、InnoDB存储引擎的锁</h1><p>与InnoDB与MyISAM的最大不同有两点:</p>
@@ -465,16 +477,14 @@
 <li>支持事务</li>
 <li>采用行锁</li>
 </ul>
-<h2 id="3-1-支持事务"><a href="#3-1-支持事务" class="headerlink" title="3.1 支持事务"></a>3.1 支持事务</h2><p><strong>1. 事务ACID（原子性、一致性、隔离性和持久性）</strong></p>
-<p><strong>2. 事务的并发处理导致的问题</strong></p>
+<h2 id="3-1-支持事务"><a href="#3-1-支持事务" class="headerlink" title="3.1 支持事务"></a>3.1 支持事务</h2><p><strong>1. 事务ACID（原子性、一致性、隔离性和持久性）</strong><br><strong>2. 事务的并发处理导致的问题</strong></p>
 <ul>
 <li>更新丢失：读取数据后，被其他事务覆盖数据</li>
 <li>脏读：读取数据后，更新数据的事务回滚了，也就是读取的数据不正确</li>
 <li>不可重复读：由于其他事务的插手，在同一事务中两次相同的查询数据是不同的（由于修改导致）</li>
 <li>幻读：由于事务1有了新增或删除操作，事务2读取不到事务1操作的数据行，因此再操作对应的行就会被阻塞。（特别注意：<strong>幻读并不是两次查询的结果不同</strong>）</li>
 </ul>
-<p><strong>3. 事务隔离级别</strong></p>
-<p>更新数据丢失不仅仅是数据库事务控制器解决，主要由应用解决。本来是为了实现事务的并发，以下对于操作对于并发的副作用越来越小，但付出的代价越来越大。</p>
+<p><strong>3. 事务隔离级别</strong><br>更新数据丢失不仅仅是数据库事务控制器解决，主要由应用解决。本来是为了实现事务的并发，以下对于操作对于并发的副作用越来越小，但付出的代价越来越大。</p>
 <ul>
 <li>读未提交的数据（Read uncommitted）：可能有脏读、不可重复读、幻读的问题</li>
 <li>读提交的数据（Read committed），没有脏读的问题，可能有不可重复读、幻读的问题</li>
@@ -512,7 +522,7 @@
 <li>对于非常容易产生死锁的业务部分，可以尝试使用升级锁定颗粒度，通过表级锁定来减少死锁产生的概率；</li>
 <li>在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。</li>
 </ul>
-<p><a href="https://blog.51cto.com/14257804/2390505?cid=732583" target="_blank" rel="noopener">记录一次Mysql死锁排查过程</a></p>
+<p><a href="https://blog.51cto.com/14257804/2390505?cid=732583" target="_blank" rel="noopener">记录一次MySQL死锁排查过程</a></p>
 <h3 id="3-2-4-行级锁的间隙锁（Next-Key-lock）"><a href="#3-2-4-行级锁的间隙锁（Next-Key-lock）" class="headerlink" title="3.2.4 行级锁的间隙锁（Next-Key lock）"></a>3.2.4 行级锁的间隙锁（Next-Key lock）</h3><p><strong>1、什么时候会出现间隙锁？</strong></p>
 <p>用法：<code>select * from 表名 where 字段名&gt;参数**（在一个范围内）** for update;</code><br>使用范围条件而不是相等条件检索数据，InnoDB除了给索引记录加锁，还会给不存在的记录（间隙）加锁，其他事务不能操作当前事务锁定的索引与间隙。</p>
 <p><strong>2、目的</strong></p>
@@ -538,9 +548,9 @@
 </blockquote>
 <p>悲观<strong>并发控制</strong>主要用于数据争用激烈的环境，以及发生并发冲突时使用锁保护数据的成本要低于回滚事务的成本的环境中。</p>
 <blockquote>
-<p>流程：<br><br>（1）在对任意记录进行修改前，先尝试为该记录加上排他锁（exclusive locking）。如果加锁失败，说明该记录正在被修改，那么当前查询可能要等待或者抛出异常。 具体响应方式由开发者根据实际需要决定。如果成功加锁，那么就可以对记录做修改，事务完成后就会解锁了。<br><br>（2）其间如果有其他对该记录做修改或加排他锁的操作，都会等待我们解锁或直接抛出异常。</p>
+<p>流程：<br>（1）在对任意记录进行修改前，先尝试为该记录加上排他锁（exclusive locking）。如果加锁失败，说明该记录正在被修改，那么当前查询可能要等待或者抛出异常。 具体响应方式由开发者根据实际需要决定。如果成功加锁，那么就可以对记录做修改，事务完成后就会解锁了。<br>（2）其间如果有其他对该记录做修改或加排他锁的操作，都会等待我们解锁或直接抛出异常。</p>
 </blockquote>
-<p><strong>优点：</strong><br><br>悲观并发控制实际上是“<strong>先取锁再访问</strong>”的保守策略，为数据处理的安全提供了保证。</p>
+<p><strong>优点：</strong><br>悲观并发控制实际上是“<strong>先取锁再访问</strong>”的保守策略，为数据处理的安全提供了保证。</p>
 <p><strong>缺点：</strong></p>
 <ul>
 <li>在效率方面，处理加锁的机制会让数据库产生额外的开销，还有增加产生死锁的机会；</li>
@@ -550,11 +560,11 @@
 <ul>
 <li>版本控制机制</li>
 </ul>
-<p>每一行数据多一个字段version，每次更新数据对应版本号+1。<br><br>原理：读出数据，将版本号一同读出，之后更新，版本号+1，提交数据版本号大于数据库当前版本号，则予以更新，否则认为是过期数据，重新读取数据。</p>
+<p>每一行数据多一个字段version，每次更新数据对应版本号+1。<br>原理：读出数据，将版本号一同读出，之后更新，版本号+1，提交数据版本号大于数据库当前版本号，则予以更新，否则认为是过期数据，重新读取数据。</p>
 <ul>
 <li>使用时间戳实现</li>
 </ul>
-<p>每一行数据多一个字段time。<br><br>原理：读出数据，将时间戳一同读出，之后更新，提交数据时间戳等于数据库当前时间戳，则予以更新，否则认为是过期数据，重新读取数据。</p>
+<p>每一行数据多一个字段time。<br>原理：读出数据，将时间戳一同读出，之后更新，提交数据时间戳等于数据库当前时间戳，则予以更新，否则认为是过期数据，重新读取数据。</p>
 <h1 id="五、案例分析"><a href="#五、案例分析" class="headerlink" title="五、案例分析"></a>五、案例分析</h1><h2 id="5-1-表锁案例分析"><a href="#5-1-表锁案例分析" class="headerlink" title="5.1 表锁案例分析"></a>5.1 表锁案例分析</h2><h3 id="5-1-1-加读锁"><a href="#5-1-1-加读锁" class="headerlink" title="5.1.1 加读锁"></a>5.1.1 加读锁</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lock</span> <span class="keyword">table</span> 表名 <span class="keyword">read</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>当前session和其他session都可以查询该表记录；</li>
@@ -700,6 +710,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/12/02/MySQL核心知识点——索引/" rel="prev" title="MySQL核心知识点——索引">
+                MySQL核心知识点——索引 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -777,7 +791,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -799,7 +813,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
