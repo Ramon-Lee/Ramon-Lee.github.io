@@ -105,7 +105,7 @@
 <meta property="og:description" content="一、锁的分类 1、按锁的粒度划分，可分为表级锁、行级锁、页级锁2、按锁级别划分，可分为共享锁、排他锁3、按使用方式划分，可分为乐观锁、悲观锁">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190626165822404.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjc5ODM1,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-12-18T06:28:07.109Z">
+<meta property="og:updated_time" content="2020-01-30T06:53:11.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL核心知识点——锁机制">
 <meta name="twitter:description" content="一、锁的分类 1、按锁的粒度划分，可分为表级锁、行级锁、页级锁2、按锁级别划分，可分为共享锁、排他锁3、按使用方式划分，可分为乐观锁、悲观锁">
@@ -350,8 +350,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-12-18T14:28:07+08:00">
-                2019-12-18
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-30T14:53:11+08:00">
+                2020-01-30
               </time>
             
           </span>
@@ -562,6 +562,7 @@
 <li><strong>使用时间戳实现</strong></li>
 </ul>
 <p>每一行数据多一个字段time。<br><strong>原理：</strong>读出数据，将时间戳一同读出，之后更新，提交数据时间戳等于数据库当前时间戳，则予以更新，否则认为是过期数据，重新读取数据。</p>
+<p><a href="https://www.open-open.com/lib/view/open1452046967245.html" target="_blank" rel="noopener">深入理解乐观锁与悲观锁</a></p>
 <h1 id="五、案例分析"><a href="#五、案例分析" class="headerlink" title="五、案例分析"></a>五、案例分析</h1><h2 id="5-1-表锁案例分析"><a href="#5-1-表锁案例分析" class="headerlink" title="5.1 表锁案例分析"></a>5.1 表锁案例分析</h2><h3 id="5-1-1-加读锁"><a href="#5-1-1-加读锁" class="headerlink" title="5.1.1 加读锁"></a>5.1.1 加读锁</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lock</span> <span class="keyword">table</span> 表名 <span class="keyword">read</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>当前session和其他session都可以查询该表记录；</li>
@@ -571,7 +572,7 @@
 <p>直到<strong>释放锁</strong><code>unlock tables;</code>之后，其他session才会获得锁，插入或更新操作完成。</p>
 <h3 id="5-1-2-加写锁"><a href="#5-1-2-加写锁" class="headerlink" title="5.1.2 加写锁"></a>5.1.2 加写锁</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lock</span> <span class="keyword">table</span> 表名 write;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>当前sessiond对锁定表的查询+插入+更新操作都可执行，其他session对锁定表的查询被阻塞，需要等待锁被释放。</li>
+<li>当前session对锁定表的查询+插入+更新操作都可执行，其他session对锁定表的查询被阻塞，需要等待锁被释放。</li>
 <li>直到<strong>释放锁</strong><code>unlock tables;</code>之后，其他session才会获得锁，查询返回。</li>
 </ul>
 <p>简而言之，就是<code>读锁会阻塞写，但是不会阻塞读。而写锁则会把读和写都阻塞</code>。（阻塞指的是阻塞其他session）</p>
@@ -828,21 +829,9 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="http://weibo.com/monkeyip" target="_blank" title="微博">
-                      
-                        <i class="fa fa-fw fa-weibo"></i>微博</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
                     <a href="https://www.zhihu.com/people/monkeyip/activities" target="_blank" title="知乎">
                       
                         <i class="fa fa-fw fa-globe"></i>知乎</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.biask.com/people/monkeyip" target="_blank" title="币问">
-                      
-                        <i class="fa fa-fw fa-heartbeat"></i>币问</a>
                   </span>
                 
             </div>
@@ -920,7 +909,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
