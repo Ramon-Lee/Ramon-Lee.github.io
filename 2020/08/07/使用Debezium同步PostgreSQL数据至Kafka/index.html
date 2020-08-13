@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+  <script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7hctjj203k03kq2s.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7dz4tj200w00wdfl.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7999yj200g00g0rb.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7hctjj203k03kq2s.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kafka,Debezium,PostgreSQL,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Debezium连接器与Kafka Connect框架一起使用，以捕获数据库中的更改并生成更改事件。然后，Kafka Connect工作程序将为连接器配置的转换应用于连接器生成的每个消息，使用工作程序的转换器将每个消息键和值序列化为二进制形式，最后将每个消息写入正确的Kafka主题。 Debezium的PostgreSQL连接器包含两个不同的部分，它们可以一起工作，以便能够读取和处理服务器更改，必">
+<meta name="keywords" content="Kafka,Debezium,PostgreSQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Debezium同步PostgreSQL数据至Kafka">
+<meta property="og:url" content="https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/index.html">
+<meta property="og:site_name" content="猴子笔记">
+<meta property="og:description" content="Debezium连接器与Kafka Connect框架一起使用，以捕获数据库中的更改并生成更改事件。然后，Kafka Connect工作程序将为连接器配置的转换应用于连接器生成的每个消息，使用工作程序的转换器将每个消息键和值序列化为二进制形式，最后将每个消息写入正确的Kafka主题。 Debezium的PostgreSQL连接器包含两个不同的部分，它们可以一起工作，以便能够读取和处理服务器更改，必">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/使用Debezium同步PostgreSQL数据至Kafka/image-20200813103317383.png">
+<meta property="og:updated_time" content="2020-08-13T03:30:47.664Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Debezium同步PostgreSQL数据至Kafka">
+<meta name="twitter:description" content="Debezium连接器与Kafka Connect框架一起使用，以捕获数据库中的更改并生成更改事件。然后，Kafka Connect工作程序将为连接器配置的转换应用于连接器生成的每个消息，使用工作程序的转换器将每个消息键和值序列化为二进制形式，最后将每个消息写入正确的Kafka主题。 Debezium的PostgreSQL连接器包含两个不同的部分，它们可以一起工作，以便能够读取和处理服务器更改，必">
+<meta name="twitter:image" content="https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/使用Debezium同步PostgreSQL数据至Kafka/image-20200813103317383.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'N6GP2ERA7A',
+      apiKey: '06f568382110773eba4ced2704c7205b',
+      indexName: 'monkey_index',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/">
+
+
+
+
+
+<link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
+  <title>使用Debezium同步PostgreSQL数据至Kafka | 猴子笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/monkeyip" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猴子笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Monkey's Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猴子哥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr4jmngj20m80m8drg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猴子笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Debezium同步PostgreSQL数据至Kafka</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-07T17:36:23+08:00">
+                2020-08-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-08-13T11:30:47+08:00">
+                2020-08-13
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据同步/" itemprop="url" rel="index">
+                    <span itemprop="name">数据同步</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/" class="leancloud_visitors" data-flag-title="使用Debezium同步PostgreSQL数据至Kafka">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Debezium连接器与Kafka Connect框架一起使用，以捕获数据库中的更改并生成更改事件。然后，Kafka Connect工作程序将为连接器配置的转换应用于连接器生成的每个消息，使用工作程序的转换器将每个消息键和值序列化为二进制形式，最后将每个消息写入正确的Kafka主题。</p>
+<p>Debezium的PostgreSQL连接器包含两个不同的部分，它们可以一起工作，以便能够读取和处理服务器更改，必须在PostgreSQL服务器中安装和配置的逻辑解码输出插件，其中之一：</p>
+<ul>
+<li><a href="https://github.com/debezium/postgres-decoderbufs" target="_blank" rel="noopener">decoderbufs</a>（由Debezium社区维护，基于ProtoBuf）</li>
+<li><a href="https://github.com/eulerto/wal2json" target="_blank" rel="noopener">wal2json</a>（由wal2json社区维护，基于JSON）</li>
+<li>pgoutput，PostgreSQL 10+中的标准逻辑解码插件（由Postgres社区维护，由Postgres自身用于<a href="https://www.postgresql.org/docs/current/logical-replication-architecture.html" target="_blank" rel="noopener">逻辑复制</a>）；该插件始终存在，这意味着不必安装任何其他库，并且Debezium连接器将直接将原始复制事件流解释为更改事件。</li>
+</ul>
+<p>由于我虚拟机安装的是PostgreSQL 9.6.8版本，所以并不支持pgoutput插件，所以需要额外安装。Debezium官网有<u><a href="https://debezium.io/documentation/reference/1.2/postgres-plugins.html#setting_replication_permissions" target="_blank" rel="noopener">安装wal2json的教程</a></u>，为了方便起见，这里安装wal2json插件。</p>
+<p><strong>官方文档：</strong></p>
+<p><u><a href="https://debezium.io/documentation/reference/1.2/connectors/postgresql.html" target="_blank" rel="noopener">Debezium connector for PostgreSQL</a></u></p>
+<p><u><a href="https://kafka.apache.org/documentation/#connect" target="_blank" rel="noopener">Kafka Connect</a></u></p>
+<h3 id="wal2json-Installation"><a href="#wal2json-Installation" class="headerlink" title="wal2json  Installation"></a>wal2json  Installation</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo yum install wal2json12</span><br><span class="line"><span class="built_in">cd</span> /opt/module</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/eulerto/wal2json -b master --single-branch</span><br><span class="line"><span class="built_in">cd</span> wal2json </span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>编译成功的信息显示：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Cloning into <span class="string">'wal2json'</span>...</span><br><span class="line">remote: Counting objects: 445, <span class="keyword">done</span>.</span><br><span class="line">remote: Total 445 (delta 0), reused 0 (delta 0), pack-reused 445</span><br><span class="line">Receiving objects: 100% (445/445), 180.70 KiB | 0 bytes/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (317/317), <span class="keyword">done</span>.</span><br><span class="line">Note: checking out <span class="string">'d2b7fef021c46e0d429f2c1768de361069e58696'</span>.</span><br><span class="line"></span><br><span class="line">You are <span class="keyword">in</span> <span class="string">'detached HEAD'</span> state. You can look around, make experimental</span><br><span class="line">changes and commit them, and you can discard any commits you make <span class="keyword">in</span> this</span><br><span class="line">state without impacting any branches by performing another checkout.</span><br><span class="line"></span><br><span class="line">If you want to create a new branch to retain commits you create, you may</span><br><span class="line"><span class="keyword">do</span> so (now or later) by using -b with the checkout <span class="built_in">command</span> again. Example:</span><br><span class="line"></span><br><span class="line">  git checkout -b new_branch_name</span><br><span class="line"></span><br><span class="line">HEAD is now at d2b7fef... Improve style</span><br><span class="line">gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC -I. -I./ -I/usr/pgsql-9.6/include/server -I/usr/pgsql-9.6/include/internal -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include  -c -o wal2json.o wal2json.c</span><br><span class="line">gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC -L/usr/pgsql-9.6/lib -Wl,--as-needed  -L/usr/lib64 -Wl,--as-needed -Wl,-rpath,<span class="string">'/usr/pgsql-9.6/lib'</span>,--<span class="built_in">enable</span>-new-dtags  -shared -o wal2json.so wal2json.o</span><br><span class="line">/usr/bin/mkdir -p <span class="string">'/usr/pgsql-9.6/lib'</span></span><br><span class="line">/usr/bin/install -c -m 755  wal2json.so <span class="string">'/usr/pgsql-9.6/lib/'</span></span><br></pre></td></tr></table></figure>
+<p>如果在make时，检测到没有权限，则使用root账户执行命令<code>chmod 777 -R /dic</code></p>
+<h3 id="PostgreSQL-Server-Configuration"><a href="#PostgreSQL-Server-Configuration" class="headerlink" title="PostgreSQL Server Configuration"></a>PostgreSQL Server Configuration</h3><h4 id="Setting-up-libraries-WAL-and-replication-parameters"><a href="#Setting-up-libraries-WAL-and-replication-parameters" class="headerlink" title="Setting up libraries, WAL and replication parameters"></a>Setting up libraries, WAL and replication parameters</h4><p>编辑$PGDATA目录中postgresql.conf</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vi <span class="variable">$PGDATA</span>/postgresql.conf</span><br><span class="line"><span class="comment">#编辑内容如下：</span></span><br><span class="line">listen_addresses = <span class="string">'*'</span></span><br><span class="line">port = 5432 </span><br><span class="line">wal_level = logical         </span><br><span class="line">max_wal_senders = 8</span><br><span class="line">wal_keep_segments = 4</span><br><span class="line">max_replication_slots = 4</span><br><span class="line">shared_preload_libraries = <span class="string">'wal2json'</span></span><br></pre></td></tr></table></figure>
+<h4 id="Setting-up-replication-permissions"><a href="#Setting-up-replication-permissions" class="headerlink" title="Setting up replication permissions"></a>Setting up replication permissions</h4><p>编辑$PGDATA目录中pg_hba.conf文件</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vi <span class="variable">$PGDATA</span>/pg_hba.conf</span><br><span class="line"><span class="comment">#编辑内容如下：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># IPv4 local connections:</span></span><br><span class="line">host    all             all             0.0.0.0/0               md5</span><br><span class="line"><span class="comment"># replication privilege.</span></span><br><span class="line"><span class="built_in">local</span>   replication     postgres                                trust</span><br><span class="line">host    replication     postgres        127.0.0.1/32            trust</span><br><span class="line">host    replication     postgres        ::1/128                 trust</span><br><span class="line">host    replication     postgres        192.168.142.102/32      trust</span><br></pre></td></tr></table></figure>
+<p>编辑完以上两文件，重启数据库服务：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">pg_ctl restart</span><br></pre></td></tr></table></figure>
+<h3 id="Database-Test-Environment-Set-up"><a href="#Database-Test-Environment-Set-up" class="headerlink" title="Database Test Environment Set-up"></a>Database Test Environment Set-up</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--切换到postgres用户，进入到postgresql交互式命令行</span></span><br><span class="line">[postgres@hadoop102 monkey]$ psql</span><br><span class="line"></span><br><span class="line"><span class="comment">--创建测试库和测试表</span></span><br><span class="line">postgres=<span class="comment"># CREATE DATABASE test;</span></span><br><span class="line">postgres=<span class="comment"># \c test;</span></span><br><span class="line">postgres=<span class="comment"># CREATE TABLE test_table (</span></span><br><span class="line">    id char(10) NOT NULL,</span><br><span class="line">    code        char(10),</span><br><span class="line">    PRIMARY KEY (id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="Decoding-Output-Plug-in-Test"><a href="#Decoding-Output-Plug-in-Test" class="headerlink" title="Decoding Output Plug-in Test"></a>Decoding Output Plug-in Test</h3><ul>
+<li>使用<code>wal2json</code>，为数据库<code>test</code>创建一个名叫<code>test_slot</code>的slot</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">pg_recvlogical -d <span class="built_in">test</span> --slot test_slot --create-slot -P wal2json</span><br></pre></td></tr></table></figure>
+<ul>
+<li>开始使用 <code>test_slot</code> 对数据库 <code>test</code>进行数据streaming变化的监测</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">pg_recvlogical -d <span class="built_in">test</span> --slot test_slot --start -o pretty-print=1 -f -</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对表<code>test_table</code> 做<code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code> 操作</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">test=<span class="comment"># INSERT INTO test_table (id, code) VALUES('id1', 'code1');</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">test</span>=<span class="comment"># update test_table set code='code2' where id='id1';</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">test</span>=<span class="comment"># delete from test_table where id='id1';</span></span><br><span class="line"><span class="keyword">DELETE</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>在监测窗口会接收到如下信息：</p>
+<p><em>Output for <code>INSERT</code> event</em></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"change"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"kind"</span>: <span class="string">"insert"</span>,</span><br><span class="line">      <span class="attr">"schema"</span>: <span class="string">"public"</span>,</span><br><span class="line">      <span class="attr">"table"</span>: <span class="string">"test_table"</span>,</span><br><span class="line">      <span class="attr">"columnnames"</span>: [<span class="string">"id"</span>, <span class="string">"code"</span>],</span><br><span class="line">      <span class="attr">"columntypes"</span>: [<span class="string">"character(10)"</span>, <span class="string">"character(10)"</span>],</span><br><span class="line">      <span class="attr">"columnvalues"</span>: [<span class="string">"id1       "</span>, <span class="string">"code1     "</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>Output for <code>UPDATE</code> event</em></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"change"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"kind"</span>: <span class="string">"update"</span>,</span><br><span class="line">      <span class="attr">"schema"</span>: <span class="string">"public"</span>,</span><br><span class="line">      <span class="attr">"table"</span>: <span class="string">"test_table"</span>,</span><br><span class="line">      <span class="attr">"columnnames"</span>: [<span class="string">"id"</span>, <span class="string">"code"</span>],</span><br><span class="line">      <span class="attr">"columntypes"</span>: [<span class="string">"character(10)"</span>, <span class="string">"character(10)"</span>],</span><br><span class="line">      <span class="attr">"columnvalues"</span>: [<span class="string">"id1       "</span>, <span class="string">"code2     "</span>],</span><br><span class="line">      <span class="attr">"oldkeys"</span>: &#123;</span><br><span class="line">        <span class="attr">"keynames"</span>: [<span class="string">"id"</span>],</span><br><span class="line">        <span class="attr">"keytypes"</span>: [<span class="string">"character(10)"</span>],</span><br><span class="line">        <span class="attr">"keyvalues"</span>: [<span class="string">"id1       "</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>Output for <code>DELETE</code> event</em></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"change"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"kind"</span>: <span class="string">"delete"</span>,</span><br><span class="line">      <span class="attr">"schema"</span>: <span class="string">"public"</span>,</span><br><span class="line">      <span class="attr">"table"</span>: <span class="string">"test_table"</span>,</span><br><span class="line">      <span class="attr">"oldkeys"</span>: &#123;</span><br><span class="line">        <span class="attr">"keynames"</span>: [<span class="string">"id"</span>],</span><br><span class="line">        <span class="attr">"keytypes"</span>: [<span class="string">"character(10)"</span>],</span><br><span class="line">        <span class="attr">"keyvalues"</span>: [<span class="string">"id1       "</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当测试完成，对数据库<code>test</code>进行监测的<code>test_slot</code>也可以被移除：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">pg_recvlogical -d <span class="built_in">test</span> --slot test_slot --drop-slot</span><br></pre></td></tr></table></figure>
+<p><strong>至此，wal2json插件算是安装成功并测试通过了。</strong></p>
+<h3 id="Debezium-PostgreSQL-Connector相关配置"><a href="#Debezium-PostgreSQL-Connector相关配置" class="headerlink" title="Debezium PostgreSQL Connector相关配置"></a>Debezium PostgreSQL Connector相关配置</h3><h4 id="Debezium-PostgreSQL-Connector-安装"><a href="#Debezium-PostgreSQL-Connector-安装" class="headerlink" title="Debezium PostgreSQL Connector 安装"></a>Debezium PostgreSQL Connector 安装</h4><p> <u><a href="https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/1.2.0.Final/debezium-connector-postgres-1.2.0.Final-plugin.tar.gz" target="_blank" rel="noopener">connector’s plug-in archive</a></u></p>
+<blockquote>
+<p>注意版本问题：目前的稳定版为1.2.0，我下载的是1.0.3</p>
+</blockquote>
+<p>将下载好的debezium-connector-postgres-1.0.3.Final-plugin.tar.gz文件解压到kafka对应的connect目录下</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[monkey@hadoop102 kafka]$ <span class="built_in">cd</span> /opt/module/kafka</span><br><span class="line">[monkey@hadoop102 kafka]$ mkdir connect</span><br><span class="line">[monkey@hadoop102 kafka]$ <span class="built_in">cd</span> /opt/software</span><br><span class="line">[monkey@hadoop102 software]$ tar -zxvf debezium-connector-postgres-1.0.3.Final-plugin.tar.gz -C /opt/module/kafka/connect</span><br></pre></td></tr></table></figure>
+<p>Kafka Connect目前支持两种模式： standalone（单进程）和distributed。</p>
+<p>由于我是单机，所以用standalone模式来测试。</p>
+<p>编辑worker配置文件：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[monkey@hadoop102 kafka]$ <span class="built_in">cd</span> /opt/module/kafka/config</span><br><span class="line">[monkey@hadoop102 kafka]$ vi connect-standalone.properties</span><br><span class="line"><span class="comment"># 编辑最后一行plugin.path，路径为Debezium connector的jar file所在目录，不用配置到最底层目录（注意可配置多个路径，单个路径也要以,结尾）</span></span><br><span class="line">plugin.path=/opt/module/kafka/connect,</span><br></pre></td></tr></table></figure>
+<p><img src="使用Debezium同步PostgreSQL数据至Kafka/image-20200813103317383.png" alt="image-20200813103317383"></p>
+<h4 id="Connector-配置样例"><a href="#Connector-配置样例" class="headerlink" title="Connector 配置样例"></a>Connector 配置样例</h4><p>配置样例有两种形式：本地编辑properties文件和使用<code>POST</code>方式提交到Kafka Connect 服务</p>
+<p><strong>1、properties文件格式</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">name=student-connector</span><br><span class="line">connector.class=io.debezium.connector.postgresql.PostgresConnector</span><br><span class="line">tasks.max=1</span><br><span class="line">database.hostname=192.168.142.102</span><br><span class="line">database.port=5432</span><br><span class="line">database.user=postgres</span><br><span class="line">database.password=postgres</span><br><span class="line">database.dbname=test</span><br><span class="line">database.server.name=info</span><br><span class="line">table.whitelist=public.student</span><br><span class="line">plugin.name=wal2json</span><br><span class="line">slot.name=my_slot</span><br></pre></td></tr></table></figure>
+<p><strong>2、使用POST方式，提交JSON格式文件</strong></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"student-connector"</span>,  </span><br><span class="line">  <span class="attr">"config"</span>: &#123;</span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"student-connector"</span>,</span><br><span class="line">	<span class="attr">"connector.class"</span>: <span class="string">"io.debezium.connector.postgresql.PostgresConnector"</span>,</span><br><span class="line">	<span class="attr">"tasks.max"</span>: <span class="string">"1"</span>,</span><br><span class="line">	<span class="attr">"database.hostname"</span>: <span class="string">"192.168.142.102"</span>, </span><br><span class="line">	<span class="attr">"database.port"</span>: <span class="string">"5432"</span>, </span><br><span class="line">	<span class="attr">"database.user"</span>: <span class="string">"postgres"</span>, </span><br><span class="line">	<span class="attr">"database.password"</span>: <span class="string">"postgres"</span>, </span><br><span class="line">	<span class="attr">"database.dbname"</span> : <span class="string">"test"</span>, </span><br><span class="line">	<span class="attr">"database.server.name"</span>: <span class="string">"info"</span>, </span><br><span class="line">	<span class="attr">"table.whitelist"</span>: <span class="string">"public.student"</span>,</span><br><span class="line">	<span class="attr">"plugin.name"</span>: <span class="string">"wal2json"</span>,</span><br><span class="line">	<span class="attr">"slot.name"</span>:<span class="string">"my_slot"</span> </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上的<code>slot.name</code>为从插件和数据库实例进行流式更改而创建的Postgres逻辑解码插槽的名称。<br>值必须符合Postgres复制插槽的命名规则，该规则指出：“每个复制插槽都有一个名称，该名称可以包含小写字母，数字和下划线字符”。不指定默认为debezium，如果需要添加多个connector，不指定的话，会报错：<br><code>Caused by: org.postgresql.util.PSQLException: ERROR: replication slot &quot;debezium&quot; is active for PID 52197</code></p>
+<h5 id="standalone模式测试"><a href="#standalone模式测试" class="headerlink" title="standalone模式测试"></a>standalone模式测试</h5><p><strong>1、开启connector</strong></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[monkey@hadoop102 kafka]$ bin/connect-standalone.sh config/connect-standalone.properties postgres-student.properties</span><br></pre></td></tr></table></figure>
+<p><strong>2、操作PostgreSQL数据库test下的student表</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">test=<span class="comment"># INSERT INTO student (id, name) VALUES('5', 'sam');</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">test</span>=<span class="comment"># update student set name = 'ethan' where id = '5';</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">test</span>=<span class="comment"># delete from student where id='5';</span></span><br><span class="line"><span class="keyword">DELETE</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><strong>3、启用kafka消费者，查看对应topic的消息接收情况</strong></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[monkey@hadoop102 kafka]$ bin/kafka-console-consumer.sh --bootstrap-server hadoop102:9092 --topic info.public.student</span><br></pre></td></tr></table></figure>
+<p><em>Output for <code>INSERT</code> event</em></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"schema"</span>:&#123;</span><br><span class="line">        <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">        <span class="attr">"fields"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"id"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"info.public.student.Value"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"before"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"id"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"info.public.student.Value"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"after"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"version"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"connector"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"ts_ms"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"name"</span>:<span class="string">"io.debezium.data.Enum"</span>,</span><br><span class="line">                        <span class="attr">"version"</span>:<span class="number">1</span>,</span><br><span class="line">                        <span class="attr">"parameters"</span>:&#123;</span><br><span class="line">                            <span class="attr">"allowed"</span>:<span class="string">"true,last,false"</span></span><br><span class="line">                        &#125;,</span><br><span class="line">                        <span class="attr">"default"</span>:<span class="string">"false"</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"snapshot"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"db"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"schema"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"table"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"txId"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"lsn"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"xmin"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"io.debezium.connector.postgresql.Source"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"source"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"op"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"ts_ms"</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"info.public.student.Envelope"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"payload"</span>:&#123;</span><br><span class="line">        <span class="attr">"before"</span>:<span class="literal">null</span>,</span><br><span class="line">        <span class="attr">"after"</span>:&#123;</span><br><span class="line">            <span class="attr">"id"</span>:<span class="string">"5         "</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"sam       "</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"source"</span>:&#123;</span><br><span class="line">            <span class="attr">"version"</span>:<span class="string">"1.0.3.Final"</span>,</span><br><span class="line">            <span class="attr">"connector"</span>:<span class="string">"postgresql"</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"info"</span>,</span><br><span class="line">            <span class="attr">"ts_ms"</span>:<span class="number">1583920562395</span>,</span><br><span class="line">            <span class="attr">"snapshot"</span>:<span class="string">"false"</span>,</span><br><span class="line">            <span class="attr">"db"</span>:<span class="string">"test"</span>,</span><br><span class="line">            <span class="attr">"schema"</span>:<span class="string">"public"</span>,</span><br><span class="line">            <span class="attr">"table"</span>:<span class="string">"student"</span>,</span><br><span class="line">            <span class="attr">"txId"</span>:<span class="number">1760</span>,</span><br><span class="line">            <span class="attr">"lsn"</span>:<span class="number">23397480</span>,</span><br><span class="line">            <span class="attr">"xmin"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"op"</span>:<span class="string">"c"</span>,</span><br><span class="line">        <span class="attr">"ts_ms"</span>:<span class="number">1583920562442</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>Output for <code>UPDATE</code> event</em></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"schema"</span>:&#123;</span><br><span class="line">        <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">        <span class="attr">"fields"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"id"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"info.public.student.Value"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"before"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"id"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"info.public.student.Value"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"after"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"version"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"connector"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"ts_ms"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"name"</span>:<span class="string">"io.debezium.data.Enum"</span>,</span><br><span class="line">                        <span class="attr">"version"</span>:<span class="number">1</span>,</span><br><span class="line">                        <span class="attr">"parameters"</span>:&#123;</span><br><span class="line">                            <span class="attr">"allowed"</span>:<span class="string">"true,last,false"</span></span><br><span class="line">                        &#125;,</span><br><span class="line">                        <span class="attr">"default"</span>:<span class="string">"false"</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"snapshot"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"db"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"schema"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"table"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"txId"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"lsn"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"xmin"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"io.debezium.connector.postgresql.Source"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"source"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"op"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"ts_ms"</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"info.public.student.Envelope"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"payload"</span>:&#123;</span><br><span class="line">        <span class="attr">"before"</span>:&#123;</span><br><span class="line">            <span class="attr">"id"</span>:<span class="string">"5         "</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"after"</span>:&#123;</span><br><span class="line">            <span class="attr">"id"</span>:<span class="string">"5         "</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"ethan     "</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"source"</span>:&#123;</span><br><span class="line">            <span class="attr">"version"</span>:<span class="string">"1.0.3.Final"</span>,</span><br><span class="line">            <span class="attr">"connector"</span>:<span class="string">"postgresql"</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"info"</span>,</span><br><span class="line">            <span class="attr">"ts_ms"</span>:<span class="number">1583920898322</span>,</span><br><span class="line">            <span class="attr">"snapshot"</span>:<span class="string">"false"</span>,</span><br><span class="line">            <span class="attr">"db"</span>:<span class="string">"test"</span>,</span><br><span class="line">            <span class="attr">"schema"</span>:<span class="string">"public"</span>,</span><br><span class="line">            <span class="attr">"table"</span>:<span class="string">"student"</span>,</span><br><span class="line">            <span class="attr">"txId"</span>:<span class="number">1761</span>,</span><br><span class="line">            <span class="attr">"lsn"</span>:<span class="number">23398864</span>,</span><br><span class="line">            <span class="attr">"xmin"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"op"</span>:<span class="string">"u"</span>,</span><br><span class="line">        <span class="attr">"ts_ms"</span>:<span class="number">1583920898326</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>Output for <code>DEETE</code> event</em></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"schema"</span>:&#123;</span><br><span class="line">        <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">        <span class="attr">"fields"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"id"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"info.public.student.Value"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"before"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"id"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"info.public.student.Value"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"after"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"struct"</span>,</span><br><span class="line">                <span class="attr">"fields"</span>:[</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"version"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"connector"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"name"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"ts_ms"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"name"</span>:<span class="string">"io.debezium.data.Enum"</span>,</span><br><span class="line">                        <span class="attr">"version"</span>:<span class="number">1</span>,</span><br><span class="line">                        <span class="attr">"parameters"</span>:&#123;</span><br><span class="line">                            <span class="attr">"allowed"</span>:<span class="string">"true,last,false"</span></span><br><span class="line">                        &#125;,</span><br><span class="line">                        <span class="attr">"default"</span>:<span class="string">"false"</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"snapshot"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"db"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"schema"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"table"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"txId"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"lsn"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                        <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"field"</span>:<span class="string">"xmin"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"name"</span>:<span class="string">"io.debezium.connector.postgresql.Source"</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"source"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"op"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"type"</span>:<span class="string">"int64"</span>,</span><br><span class="line">                <span class="attr">"optional"</span>:<span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"field"</span>:<span class="string">"ts_ms"</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"optional"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"info.public.student.Envelope"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"payload"</span>:&#123;</span><br><span class="line">        <span class="attr">"before"</span>:&#123;</span><br><span class="line">            <span class="attr">"id"</span>:<span class="string">"5         "</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"after"</span>:<span class="literal">null</span>,</span><br><span class="line">        <span class="attr">"source"</span>:&#123;</span><br><span class="line">            <span class="attr">"version"</span>:<span class="string">"1.0.3.Final"</span>,</span><br><span class="line">            <span class="attr">"connector"</span>:<span class="string">"postgresql"</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"info"</span>,</span><br><span class="line">            <span class="attr">"ts_ms"</span>:<span class="number">1583921079909</span>,</span><br><span class="line">            <span class="attr">"snapshot"</span>:<span class="string">"false"</span>,</span><br><span class="line">            <span class="attr">"db"</span>:<span class="string">"test"</span>,</span><br><span class="line">            <span class="attr">"schema"</span>:<span class="string">"public"</span>,</span><br><span class="line">            <span class="attr">"table"</span>:<span class="string">"student"</span>,</span><br><span class="line">            <span class="attr">"txId"</span>:<span class="number">1762</span>,</span><br><span class="line">            <span class="attr">"lsn"</span>:<span class="number">23399936</span>,</span><br><span class="line">            <span class="attr">"xmin"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"op"</span>:<span class="string">"d"</span>,</span><br><span class="line">        <span class="attr">"ts_ms"</span>:<span class="number">1583921079912</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要有用的信息在：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"payload"</span>:&#123;</span><br><span class="line">        <span class="attr">"before"</span>:&#123;</span><br><span class="line">            <span class="attr">"id"</span>:<span class="string">"5         "</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"after"</span>:&#123;</span><br><span class="line">            <span class="attr">"id"</span>:<span class="string">"5         "</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"ethan     "</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"source"</span>:&#123;</span><br><span class="line">            <span class="attr">"version"</span>:<span class="string">"1.0.3.Final"</span>,</span><br><span class="line">            <span class="attr">"connector"</span>:<span class="string">"postgresql"</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"info"</span>,</span><br><span class="line">            <span class="attr">"ts_ms"</span>:<span class="number">1583920898322</span>,</span><br><span class="line">            <span class="attr">"snapshot"</span>:<span class="string">"false"</span>,</span><br><span class="line">            <span class="attr">"db"</span>:<span class="string">"test"</span>,</span><br><span class="line">            <span class="attr">"schema"</span>:<span class="string">"public"</span>,</span><br><span class="line">            <span class="attr">"table"</span>:<span class="string">"student"</span>,</span><br><span class="line">            <span class="attr">"txId"</span>:<span class="number">1761</span>,</span><br><span class="line">            <span class="attr">"lsn"</span>:<span class="number">23398864</span>,</span><br><span class="line">            <span class="attr">"xmin"</span>:<span class="literal">null</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"op"</span>:<span class="string">"u"</span>,</span><br><span class="line">        <span class="attr">"ts_ms"</span>:<span class="number">1583920898326</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="distributed模式测试"><a href="#distributed模式测试" class="headerlink" title="distributed模式测试"></a>distributed模式测试</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[monkey@hadoop102 kafka]$ bin/connect-distributed.sh config/connect-distributed.properties</span><br></pre></td></tr></table></figure>
+<p>得到的结果和standalone模式是一致的。</p>
+
+      
+    </div>
+    
+    
+    
+    
+      <div>
+        
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>感谢您的阅读 ------</div>
+    
+      </div>
+    
+    
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr7n6v6j20g60g3gmn.jpg" alt="猴子哥 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr3k2i3j2089088dg4.jpg" alt="猴子哥 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    猴子哥
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/" title="使用Debezium同步PostgreSQL数据至Kafka">https://monkeyip.github.io/2020/08/07/使用Debezium同步PostgreSQL数据至Kafka/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag"><i class="fa fa-tag"></i> Kafka</a>
+          
+            <a href="/tags/Debezium/" rel="tag"><i class="fa fa-tag"></i> Debezium</a>
+          
+            <a href="/tags/PostgreSQL/" rel="tag"><i class="fa fa-tag"></i> PostgreSQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/31/Flume消费Kafka，启动后无法正常关闭Flume进程的问题/" rel="next" title="Flume消费Kafka，启动后无法正常关闭Flume进程的问题">
+                <i class="fa fa-chevron-left"></i> Flume消费Kafka，启动后无法正常关闭Flume进程的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://ws1.sinaimg.cn/large/8f4e63a5gy1fw3hr4jmngj20m80m8drg.jpg" alt="猴子哥">
+            
+              <p class="site-author-name" itemprop="name">猴子哥</p>
+              <p class="site-description motion-element" itemprop="description">接受变化，拥抱新世界</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/monkeyip" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/monkeyip/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://notes.iissnan.com/" title="IIssNan" target="_blank">IIssNan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tech.meituan.com/" title="美团技术团队" target="_blank">美团技术团队</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tech.youzan.com/" title="有赞技术团队" target="_blank">有赞技术团队</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://codepub.cn/links/" title="IT草根推荐博客" target="_blank">IT草根推荐博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#wal2json-Installation"><span class="nav-number">1.</span> <span class="nav-text">wal2json  Installation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PostgreSQL-Server-Configuration"><span class="nav-number">2.</span> <span class="nav-text">PostgreSQL Server Configuration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Setting-up-libraries-WAL-and-replication-parameters"><span class="nav-number">2.1.</span> <span class="nav-text">Setting up libraries, WAL and replication parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Setting-up-replication-permissions"><span class="nav-number">2.2.</span> <span class="nav-text">Setting up replication permissions</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Database-Test-Environment-Set-up"><span class="nav-number">3.</span> <span class="nav-text">Database Test Environment Set-up</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decoding-Output-Plug-in-Test"><span class="nav-number">4.</span> <span class="nav-text">Decoding Output Plug-in Test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Debezium-PostgreSQL-Connector相关配置"><span class="nav-number">5.</span> <span class="nav-text">Debezium PostgreSQL Connector相关配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Debezium-PostgreSQL-Connector-安装"><span class="nav-number">5.1.</span> <span class="nav-text">Debezium PostgreSQL Connector 安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connector-配置样例"><span class="nav-number">5.2.</span> <span class="nav-text">Connector 配置样例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#standalone模式测试"><span class="nav-number">5.2.1.</span> <span class="nav-text">standalone模式测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#distributed模式测试"><span class="nav-number">5.2.2.</span> <span class="nav-text">distributed模式测试</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div id="music163player">
+    	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="280" height="86" src="//music.163.com/outchain/player?type=2&id=28625050&auto=0&height=66">
+    	</iframe>
+  	  </div>
+  	  
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">猴子哥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("WX6dJUdPJtqBGSOTTTBpBxzL-gzGzoHsz", "tfrUh5E8wUOI7JtS9ugbt4Vd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/lib/clipboard/clipboard.js"></script>
+<script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+<!-- 代码块复制功能 -->
+<script type="text/javascript" src="/js/src/clipboard.min.js"></script>  
+<script type="text/javascript" src="/js/src/clipboard-use.js"></script>
